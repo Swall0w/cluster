@@ -28,9 +28,3 @@ if __name__ == "__main__":
     for (i,label) in enumerate(estimator.labels_):
         plt.scatter(X_projection[i,0],X_projection[i,1],c=cmap[label])
     plt.show()
-
-#    result = estimator.fit(X)
-#    labels = result.labels_
-#
-#    for label, dat,tr in zip(labels,X,y):
-#        print(label,tr -1, dat)
