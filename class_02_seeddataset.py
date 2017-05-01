@@ -23,14 +23,10 @@ if __name__ == "__main__":
     X_projection = pca.fit_transform(X)
 
 # Plot figre
+    cmap = {0:'red',1:'blue',2:'green'}
     plt.figure()
     for (i,label) in enumerate(estimator.labels_):
-        if label == 0:
-            plt.scatter(X_projection[i,0],X_projection[i,1],c='red')
-        elif label == 1:
-            plt.scatter(X_projection[i,0],X_projection[i,1],c='blue')
-        elif label == 2:
-            plt.scatter(X_projection[i,0],X_projection[i,1],c='green')
+        plt.scatter(X_projection[i,0],X_projection[i,1],c=cmap[label])
     plt.show()
 
 #    result = estimator.fit(X)
