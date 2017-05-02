@@ -32,14 +32,8 @@ if __name__ == "__main__":
 
 # Plot figre
     cmap = {0:'red',1:'blue',2:'green'}
-#    plt.figure()
-#    for (i,label) in enumerate(estimator.labels_):
-#        #plt.scatter(X_projection[i,0],X_projection[i,1],c=cmap[label])
-#        plt.text(X_projection[i,0],X_projection[i,1], str(y[i]), color=cmap[label])
-#    plt.show()
     fig, ax = plt.subplots()
-#    ax.scatter(X_projection[:,0],X_projection[:,1])
     for (i, label) in enumerate(estimator.labels_):
         ax.scatter(X_projection[i,0],X_projection[i,1],c=cmap[label])
-        ax.annotate(str(int(y[i])),(X_projection[i,0],X_projection[i,1]),color=cmap[label])
+        ax.annotate(str(int(y[i])),(X_projection[i,0],X_projection[i,1]),color=cmap[(int(y[i]) - 1)])
     plt.show()
