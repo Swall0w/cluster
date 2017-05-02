@@ -5,7 +5,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-import pylab as pl
+
+from func import cluster
 
 def data_split(data,num):
     X = data[:,:num]
@@ -25,6 +26,9 @@ if __name__ == "__main__":
 
 # Clustering with K-means
     estimator = KMeans(n_clusters=3).fit(X)
+
+    pred = cluster.KMeans(num_clusters=3).fit_predict(X)
+    print(pred)
 
 # Dicreasing dimensions by PCA
     pca = PCA(n_components=2)
