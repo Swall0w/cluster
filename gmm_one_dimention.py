@@ -3,8 +3,6 @@ from matplotlib import pyplot
 import sys
 import argparse
 
-def arg():
-    pass
 
 def generate_data(K,N):
     X, mu_star, sigma_star = [], [],[] 
@@ -38,12 +36,13 @@ def calc_Q(X,mu, sigma, pi ,gamma):
     for (i, x) in enumerate(X):
         Q += (gamma[i,:] * (-0.5 *  (x -mu)** 2 / sigma)).sum()
     return Q
-def main():
-    class_num = 2
-    data_num = 1000 * class_num
+def main(class_num, class_data, epsilon):
+#    class_num = 2
+#    data_num = 1000 * class_num
+    data_num = class_data * class_num
     X, mu_star, sigma_star = generate_data(class_num,data_num)
 
-    epsilon = 0.000001
+#    epsilon = 0.000001
     pi = np.random.rand(class_num)
     mu = np.random.randn(class_num)
     sigma = np.abs(np.random.randn(class_num))
@@ -68,7 +67,13 @@ def main():
         pyplot.plot(seq, gaussian(mu[i],sigma[i])(seq), linewidth= 2.0)
     pyplot.show()
 
-
+def arg():
+    parser = argparse.ArgumentParser(description='1-dimentional GMM Clustering script')
+    parser.add_argument('--classes','-c',type=int,default=2,help='Number of clusters.')
+    parser.add_argument('--data','-d',type=int,default=1000,help='Number of each class data.')
+    parser.add_argument('--epsilon','-e',type=float,default=0.000001,help='Number of each class data.')
+    return parser.parse_args()
 
 if __name__ == '__main__':
-    main()
+    args = arg()
+    main(args.classes,args.data,args.epsilon)
