@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot
+from matplotlib import animation
 import sys
 import argparse
 
@@ -37,18 +38,18 @@ def calc_Q(X,mu, sigma, pi ,gamma):
         Q += (gamma[i,:] * (-0.5 *  (x -mu)** 2 / sigma)).sum()
     return Q
 def main(class_num, class_data, epsilon):
-#    class_num = 2
-#    data_num = 1000 * class_num
     data_num = class_data * class_num
     X, mu_star, sigma_star = generate_data(class_num,data_num)
 
-#    epsilon = 0.000001
     pi = np.random.rand(class_num)
     mu = np.random.randn(class_num)
     sigma = np.abs(np.random.randn(class_num))
     Q = -sys.float_info.max
     delta = None
 
+    fig = pyplot.figure() 
+    ims = []
+    cmap =['r','g','b']
     while delta == None or delta >= epsilon:
         gf = gaussian(mu, sigma)
         gamma = estimate_posterior_likelihood(X, pi, gf)
@@ -58,6 +59,18 @@ def main(class_num, class_data, epsilon):
         delta = Q_new - Q
         Q = Q_new
 
+        n, bins,_ = pyplot.hist(X, 50, normed=True, alpha = 0.3)
+        seq = np.arange(-50,50,0.02)
+        lines = []
+        for i in range(class_num):
+            line, = pyplot.plot(seq, gaussian(mu[i],sigma[i])(seq), linewidth= 2.0,color=cmap[i])
+            lines.append(line)
+        ims.append(lines)
+    
+    ani = animation.ArtistAnimation(fig,ims)
+    #pyplot.show()
+    ani.save('gmm.gif',writer='imagemagick')
+
     print('mu* : {0} sigma* : {1}'.format(np.sort(np.around(mu_star,3)),np.sort(np.around(sigma_star,3))))
     print('mu  : {0} sigma  : {1}'.format(np.sort(np.around(mu,3)),np.sort(np.around(sigma,3))))
 
@@ -65,8 +78,7 @@ def main(class_num, class_data, epsilon):
     seq = np.arange(-50,50,0.02)
     for i in range(class_num):
         pyplot.plot(seq, gaussian(mu[i],sigma[i])(seq), linewidth= 2.0)
-        print(max(gaussian(mu[i],sigma[i])(seq)))
-    pyplot.show()
+    pyplot.savefig('last_gmm_graph.png')
 
 def arg():
     parser = argparse.ArgumentParser(description='1-dimentional GMM Clustering script')
