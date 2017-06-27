@@ -7,7 +7,7 @@ import argparse
 def generate_data(K,N):
     X, mu_star, sigma_star = [], [],[] 
     for i in range(K):
-        loc = (np.random.rand() - 0.5) * 10.0
+        loc = (np.random.rand() - 0.5) * 50.0
         scale = np.random.rand() + 3.0
         X = np.append(X, np.random.normal(loc = loc, scale = scale, size = int(N/K)))
         mu_star = np.append(mu_star, loc)
@@ -16,7 +16,7 @@ def generate_data(K,N):
 
 def gaussian(mu,sigma):
     def f(x):
-        return np.exp(-0.5 * (x - mu) ** 2 / sigma) / np.sqrt(2 * np.pi * sigma)
+        return np.exp(-0.5 * ((x - mu)**2/sigma)) / np.sqrt(2 * np.pi * (sigma))
     return f
 
 def estimate_posterior_likelihood(X,pi, gf):
@@ -61,10 +61,11 @@ def main(class_num, class_data, epsilon):
     print('mu* : {0} sigma* : {1}'.format(np.sort(np.around(mu_star,3)),np.sort(np.around(sigma_star,3))))
     print('mu  : {0} sigma  : {1}'.format(np.sort(np.around(mu,3)),np.sort(np.around(sigma,3))))
 
-    n, bins,_ = pyplot.hist(X, 50, normed = 1, alpha = 0.3)
-    seq = np.arange(-15,15,0.02)
+    n, bins,_ = pyplot.hist(X, 50, normed=True, alpha = 0.3)
+    seq = np.arange(-50,50,0.02)
     for i in range(class_num):
         pyplot.plot(seq, gaussian(mu[i],sigma[i])(seq), linewidth= 2.0)
+        print(max(gaussian(mu[i],sigma[i])(seq)))
     pyplot.show()
 
 def arg():
